@@ -1,34 +1,52 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
+import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 
-import {Link, Outlet, useNavigate} from "react-router-dom";
-
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import AppLayout from "./components/AppLayout";
 
-import logo from './logo.svg';
-import './App.css';
+import chatLogo from "./images/chat-logo.svg";
+
+const duration = 300;
+const defaultStyle = {
+    transition: `opacity ${duration}ms ease-in-out`,
+    opacity: 0,
+}
+const transitionStyles = {
+    entering: { opacity: 1 },
+    entered:  { opacity: 1 },
+    exiting:  { opacity: 0 },
+    exited:  { opacity: 0 },
+};
 
 function App() {
+    const location = useLocation();
     const navigate = useNavigate();
+
+    const nodeRef = useRef();
+
+
+
     useEffect(() => {
         if (!localStorage.getItem("key")) {
             return navigate("/login");
         }
     }, []);
     return (
-        <AppLayout>
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <p>
-                        Edit <code>src/App.tsx</code> and save to reload.
-                    </p>
-                    <Link to="/test" preventScrollReset={true}>
-                        <div className="text-lg text-indio-700">Learn React</div>
-                    </Link>
-                </header>
-                <Outlet/>
-            </div>
-        </AppLayout>
+        <>
+            <AppLayout>
+                <div>
+                    <div className="flex justify-center h-screen bg-white dark:bg-zinc-800/[80]">
+                        <img src={chatLogo} alt="chat logo" width={200} height={200}/>
+                    </div>
+                    <TransitionGroup component={null} exit={false}>
+                        <CSSTransition key={location.pathname} nodeRef={nodeRef} timeout={300} classNames="right"
+                                       addEndListener={(node, done) => node.addEventListener("transitionend", done, false)} unmountOnExit>
+                            <Outlet/>
+                        </CSSTransition>
+                    </TransitionGroup>
+                </div>
+            </AppLayout>
+        </>
     );
 }
 

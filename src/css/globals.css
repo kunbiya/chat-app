@@ -274,25 +274,50 @@ h6 {
 }
 
 /* Transition */
-.fade-enter {
-    position: relative;
-    transform: translateY(150px);
-    opacity: 0;
-    transition: 300s all ease;
+.right-enter {
+    transform: translateX(100%);
 }
 
-.fade-enter-active {
-    transform: translate3d(0, 0, 0);
-    transition: opacity 300ms, transform 300ms;
+.right-enter-active {
+    transform: translateX(0);
+    transition: transform 300ms ease-in-out;
 }
 
-.fade-exit {
-    transform: translate3d(0, 0, 0);
+.right-exit {
+    transform: translateX(0);
 }
 
-.fade-exit-active {
-    transform: translate3d(-100%, 0, 0);
-    transition: opacity 300ms, transform 300ms;
+.right-exit-active {
+    transform: translateX(-100%);
+    transition: transform 300ms ease-in-out;
+}
+
+.animate-left {
+    animation: 0.3s left-scale ease;
+}
+
+.animate-right {
+    animation: 0.3s right-scale ease;
+}
+
+@keyframes left-scale {
+    from {
+        transform: translateX(100vw);
+    }
+    to {
+        transform: translateX(0px);
+        transition: all 300ms ease 0s;
+    }
+}
+
+@keyframes right-scale {
+    from {
+        transform: translateX(0px);
+    }
+    to {
+        transform: translateX(100vw);
+        transition: all 300ms ease 0s;
+    }
 }
 
 .up-scale {
@@ -377,3 +402,14 @@ h6 {
     transform: translate(0, -140px);
 }
 
+::-moz-selection {
+    background: #22D3EE;
+    color: #FFF;
+    text-shadow: 1px 1px 2px #09090B;
+}
+
+::selection {
+    background: #22D3EE;
+    color: #FFF;
+    text-shadow: 1px 1px 2px #09090B;
+}

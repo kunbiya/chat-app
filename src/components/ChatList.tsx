@@ -1,9 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 
 import Icon from '@mdi/react';
-import { mdiAccountMultipleOutline, mdiBookAccountOutline, mdiMagnify } from '@mdi/js';
+import { mdiAccountMultipleOutline, mdiForumOutline, mdiMagnify, mdiCogOutline } from '@mdi/js';
+
+import classNames from 'classnames';
+
+import MemberList from '../components/MemberList';
+import ChattingList from '../components/ChattingList';
 
 export default function ChatList() {
+    const [activeType, setActiveType] = useState<number>(1);
+
     return (
         <>
             <div>
@@ -20,15 +27,23 @@ export default function ChatList() {
                 </label>
             </div>
             <div className="flex justify-around">
-                <div className="cursor-pointer">
-                    <Icon path={mdiAccountMultipleOutline} size="24px" />
+                <div className={classNames(activeType === 1 ? "text-white" : "text-white/70", "cursor-pointer hover:text-white/90")} title="친구 목록"
+                     onClick={() => setActiveType(1)}>
+                    <Icon path={mdiAccountMultipleOutline} size="24px"/>
                 </div>
-                <div className="cursor-pointer">
-                    <Icon path={mdiBookAccountOutline} size="24px" />
+                <div className={classNames(activeType === 2 ? "text-white" : "text-white/70", "cursor-pointer hover:text-white/90")} title="채팅방 목록"
+                     onClick={() => setActiveType(2)}>
+                    <Icon path={mdiForumOutline} size="24px"/>
                 </div>
-                <div className="cursor-pointer">
-                    <Icon path={mdiAccountMultipleOutline} size="24px" />
+                <div className={classNames(activeType === 3 ? "text-white" : "text-white/70", "cursor-pointer hover:text-white/90")} title="?????"
+                     onClick={() => setActiveType(3)}>
+                    <Icon path={mdiCogOutline} size="24px"/>
                 </div>
+            </div>
+            <div className="flex max-h-[calc(100vh-245px)]">
+                {activeType === 1 ? <MemberList/> : <></>}
+                {activeType === 2 ? <ChattingList/> : <></>}
+                {/*{activeType === 3 ? <UserSettings/> : <></>}*/}
             </div>
         </>
     );

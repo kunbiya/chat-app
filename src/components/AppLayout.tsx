@@ -1,6 +1,7 @@
 import React, {ReactNode} from "react"
 
 import NavBar from '../components/NavBar';
+import MobileNavBar from '../components/MobileNavBar';
 import NavHeader from '../components/NavHeader';
 
 type Props = {
@@ -13,15 +14,20 @@ const AppLayout = ({children}: Props) => {
 
     return (
         <>
-            <div className="hidden md:flex">
+            <div className="hidden md:flex w-screen">
                 {/*{navRender ? <NavBar/> : <></>}*/}
                 <NavBar/>
-                <div className="w-full h-screen">
+                <div className="w-[calc(100vw-24rem)]">
                     {/*<NavHeader />*/}
                     {children}
                 </div>
             </div>
-            <div className="md:hidden">모바일 사이즈</div>
+            <div className="md:hidden flex">
+                <div className="w-screen">
+                    {children}
+                </div>
+                <MobileNavBar />
+            </div>
         </>
     );
 };
