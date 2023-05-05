@@ -15,37 +15,19 @@ const avatarText = (text: string) => {
     return text.split("")[0].toUpperCase();
 }
 
-type memberType = {
-    type?: number,
-    chattingShow?: boolean,
-}
-
-const ChattingList = ({type, chattingShow}: memberType) => {
+const ChattingList = () => {
     const navigate = useNavigate();
     const chatList = useSelector(selectChatLists);
 
+    // 데스크탑 - 채팅방목록 더블 클릭시 채팅창 이동
     const handleDoubleClick = (e, index) => navigate(`/chat?id=${index}`);
+
+    // 모바일 - 채팅방목록 클릭시 채팅창 이동 + 애니메이션 효과제어
     const handleClick = (index) => {
-        setScale("down-scale");
         setTimeout(() => {
             return navigate(`/chat?id=${index}`);
         }, 300);
     }
-
-    const [scale, setScale] = useState("");
-    const [hidden, setHidden] = useState(true);
-    useEffect(() => {
-        if (typeof chattingShow === "undefined") return;
-        if (chattingShow) {
-            setScale("up-scale");
-            setHidden(false);
-        } else {
-            setScale("down-scale");
-            setTimeout(() => {
-                setHidden(true);
-            }, 300);
-        }
-    }, [chattingShow]);
 
     return (
         <>
@@ -53,8 +35,8 @@ const ChattingList = ({type, chattingShow}: memberType) => {
             <div className="hidden md:block w-full overflow-y-auto pt-3">
                 <div className="flex flex-col gap-y-3">
                     {chatList.map((value, index) => (
-                        <Tooltip title={value["chat"]} arrow disableInteractive enterDelay={1000} placement="right-end">
-                            <div key={index} className="flex items-center gap-x-3 cursor-pointer hover:rounded-lg hover:bg-white/10"
+                        <Tooltip key={"chatting-d"+index} title={value["chat"]} arrow disableInteractive enterDelay={1000} placement="right-end">
+                            <div className="flex items-center gap-x-3 cursor-pointer hover:rounded-lg hover:bg-white/10"
                                  aria-label={String(index)} onDoubleClick={e => handleDoubleClick(e, index)}>
                                 <div className="flex items-center justify-center w-8 h-8 rounded-full font-bold" style={{backgroundColor: randomHex(index%9)}}>
                                     {avatarText(value["name"])}
@@ -71,15 +53,18 @@ const ChattingList = ({type, chattingShow}: memberType) => {
                 </div>
             </div>
             {/*모바일*/}
-            <div className={classNames("md:hidden flex absolute top-0 left-0 m-4 max-w-[calc(100vw-2rem)]",  hidden ? "hidden" : "", scale)}>
-                <div className="flex flex-col p-4 gap-y-3 w-screen max-h-[calc(100vh-80px-1rem)] bg-blue-600 rounded-t-xl overflow-y-auto dark:bg-zinc-700">
+            <div className={classNames("md:hidden flex absolute top-0 left-0 m-4 max-w-[calc(100vw-2rem)]")}>
+                <div className="flex flex-col p-4 gap-y-3 w-screen max-h-[calc(100vh-80px-1rem)] bg-blue-500 rounded-t-xl overflow-y-auto dark:bg-zinc-700">
                     {chatList.map((value, index) => (
-                        <div key={"chat" + index} className="flex items-center gap-x-3 text-white hover:rounded-lg hover:bg-white/10 h-10"
+                        <div key={"chatting-m"+index} className="flex items-center gap-x-3 cursor-pointer text-white hover:rounded-lg hover:bg-white/10 h-10"
                              aria-label={String(index)} onClick={() => handleClick(index)}>
                             <div className="flex items-center justify-center w-8 h-8 rounded-full font-bold" style={{backgroundColor: randomHex(index%9)}}>
                                 {avatarText(value["name"])}
                             </div>
-                            <div>{value["name"]}</div>
+                            <div className="flex flex-col overflow-hidden">
+                                <div className="text-white">{value["name"]}</div>
+                                <div className="text-white/80 text-sm max-w-[65vw] overflow-hidden text-ellipsis whitespace-nowrap">{value["chat"]}</div>
+                            </div>
                         </div>
                     ))}
                 </div>

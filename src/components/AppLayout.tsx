@@ -1,7 +1,6 @@
-import React, {ReactNode} from "react"
+import React, {ReactNode, useState} from "react"
 
 import NavBar from '../components/NavBar';
-import MobileNavBar from '../components/MobileNavBar';
 import NavHeader from '../components/NavHeader';
 
 type Props = {
@@ -9,26 +8,15 @@ type Props = {
 }
 
 const AppLayout = ({children}: Props) => {
-    // const router = useRouter();
-    // const navRender = router.pathname !== "/login";
+    const [currentState, setCurrentState] = useState<any>(1);
 
     return (
-        <>
-            <div className="hidden md:flex w-screen">
-                {/*{navRender ? <NavBar/> : <></>}*/}
-                <NavBar/>
-                <div className="w-[calc(100vw-24rem)]">
-                    {/*<NavHeader />*/}
-                    {children}
-                </div>
+        <div className="flex w-screen">
+            <NavBar/>
+            <div className="w-screen md:w-[calc(100vw-24rem)]">
+                {children}
             </div>
-            <div className="md:hidden flex">
-                <div className="w-screen">
-                    {children}
-                </div>
-                <MobileNavBar />
-            </div>
-        </>
+        </div>
     );
 };
 

@@ -36,7 +36,7 @@ function App() {
             <AppLayout>
                 <div>
                     <div className="flex justify-center h-screen bg-white dark:bg-zinc-800/[80]">
-                        <img src={chatLogo} alt="chat logo" width={200} height={200}/>
+                        <img src={chatLogo} alt="chat logo" width={200} height={200} className="hidden md:block"/>
                     </div>
                     <TransitionGroup component={null} exit={false}>
                         <CSSTransition key={location.pathname} nodeRef={nodeRef} timeout={300} classNames="right"
